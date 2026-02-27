@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="autoLockWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>480</width>
+    <height>272</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>480</width>
+    <height>272</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>480</width>
+    <height>272</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>484</width>
+     <height>281</height>
+    </rect>
+   </property>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>154</x>
+      <y>6</y>
+      <width>320</width>
+      <height>260</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>320</width>
+      <height>260</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>320</width>
+      <height>260</height>
+     </size>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: transparent;
+border-top: 1px solid black; 
+border-right: 1px solid black;  
+border-bottom: 1px solid black; 
+border-left: 1px solid black; </string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>6</y>
+      <width>120</width>
+      <height>35</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>18</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: transparent;
+border-top: 1px solid black; 
+border-right: 1px solid black;  
+border-bottom: 1px solid black; 
+border-left: 1px solid black; </string>
+    </property>
+    <property name="text">
+     <string>冈群</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pbn_calibration">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>51</y>
+      <width>120</width>
+      <height>65</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>25</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">        QPushButton {\n            background-color: #4CAF50; /* 绿色背景 */\n            color: white;              /* 白色文字 */\n            border: 2px solid #388E3C; /* 深绿边框 */\n            border-radius: 8px;        /* 圆角 */\n            font-size: 14px;\n        }\n        /* 悬浮状态（鼠标移上去） */\n        QPushButton:hover {\n            background-color: #66BB6A; /* 浅绿背景 */\n        }\n        /* 按下状态（核心：按压效果） */\n        QPushButton:pressed {\n            background-color: #2E7D32; /* 更深的绿色 */\n            border: 2px solid #1B5E20; /* 更暗的边框 */\n            padding-left: 2px;         /* 文字右移2px */\n            padding-top: 2px;          /* 文字下移2px */\n        }</string>
+    </property>
+    <property name="text">
+     <string>标定</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pbn_settings">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>126</y>
+      <width>120</width>
+      <height>65</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>25</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">        QPushButton {\n            background-color: #4CAF50; /* 绿色背景 */\n            color: white;              /* 白色文字 */\n            border: 2px solid #388E3C; /* 深绿边框 */\n            border-radius: 8px;        /* 圆角 */\n            font-size: 14px;\n        }\n        /* 悬浮状态（鼠标移上去） */\n        QPushButton:hover {\n            background-color: #66BB6A; /* 浅绿背景 */\n        }\n        /* 按下状态（核心：按压效果） */\n        QPushButton:pressed {\n            background-color: #2E7D32; /* 更深的绿色 */\n            border: 2px solid #1B5E20; /* 更暗的边框 */\n            padding-left: 2px;         /* 文字右移2px */\n            padding-top: 2px;          /* 文字下移2px */\n        }</string>
+    </property>
+    <property name="text">
+     <string>设置</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pbn_lock">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>201</y>
+      <width>120</width>
+      <height>65</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>25</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">        QPushButton {\n            background-color: #4CAF50; /* 绿色背景 */\n            color: white;              /* 白色文字 */\n            border: 2px solid #388E3C; /* 深绿边框 */\n            border-radius: 8px;        /* 圆角 */\n            font-size: 14px;\n        }\n        /* 悬浮状态（鼠标移上去） */\n        QPushButton:hover {\n            background-color: #66BB6A; /* 浅绿背景 */\n        }\n        /* 按下状态（核心：按压效果） */\n        QPushButton:pressed {\n            background-color: #2E7D32; /* 更深的绿色 */\n            border: 2px solid #1B5E20; /* 更暗的边框 */\n            padding-left: 2px;         /* 文字右移2px */\n            padding-top: 2px;          /* 文字下移2px */\n        }</string>
+    </property>
+    <property name="text">
+     <string>锁屏</string>
+    </property>
+   </widget>
+   <widget class="Line" name="line">
+    <property name="geometry">
+     <rect>
+      <x>135</x>
+      <y>0</y>
+      <width>20</width>
+      <height>281</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Vertical</enum>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>autoLockWindow</class>
+   <extends>QWidget</extends>
+   <header>autolockwindow.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
