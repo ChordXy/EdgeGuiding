@@ -1,0 +1,1160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>calibrationDialog</class>
+ <widget class="autoCloseDialog" name="calibrationDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>480</width>
+    <height>272</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>480</width>
+    <height>272</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>480</width>
+    <height>272</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QPushButton" name="pbn_return">
+   <property name="geometry">
+    <rect>
+     <x>5</x>
+     <y>5</y>
+     <width>50</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+     <horstretch>50</horstretch>
+     <verstretch>50</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>50</width>
+     <height>50</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>16777215</width>
+     <height>60</height>
+    </size>
+   </property>
+   <property name="font">
+    <font>
+     <family>仿宋</family>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+	background-color: #F5F5F5;
+
+	background-image: url(:/image/back.png);
+    background-repeat: no-repeat;  /* 禁止图片重复（必加） */
+    background-position: center;   /* 图片居中（必加） */
+}
+
+/* 按下状态（核心：按压效果） */
+QPushButton:pressed {
+	background-color: #2E7D32; /* 更深的绿色 */
+	border: 2px solid #1B5E20; /* 更暗的边框 */
+	padding-left: 2px;         /* 文字右移2px */
+	padding-top: 2px;          /* 文字下移2px */
+}</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pbn_mode">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>226</y>
+     <width>85</width>
+     <height>40</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>85</width>
+     <height>40</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>85</width>
+     <height>40</height>
+    </size>
+   </property>
+   <property name="font">
+    <font>
+     <family>仿宋</family>
+     <pointsize>-1</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+    background-color: #e6e6e6;
+    color: #333;
+    border: 2px solid;
+    border-color: #f5f5f5 #aaaaaa #aaaaaa #f5f5f5;
+    border-radius: 4px;
+    font-size: 25px;
+    padding: 5px;
+}
+
+/* 选中（开）- 凹陷效果 */
+QPushButton:checked {
+    background-color: #d0e8f8;
+    color: #006699;
+    border-color: #aaaaaa #f5f5f5 #f5f5f5 #aaaaaa;
+}
+
+/* 悬浮效果 */
+QPushButton:hover {
+    background-color: #f0f8ff;
+}
+
+/* 按下效果 */
+QPushButton:pressed:checked {
+    border-color: #888888 #ffffff #ffffff #888888;
+    background-color: #b9d9ee;
+}</string>
+   </property>
+   <property name="text">
+    <string>模式</string>
+   </property>
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="Line" name="line">
+   <property name="geometry">
+    <rect>
+     <x>180</x>
+     <y>0</y>
+     <width>20</width>
+     <height>281</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>仿宋</family>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Vertical</enum>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pbn_rBoundry">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>179</y>
+     <width>85</width>
+     <height>40</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>85</width>
+     <height>40</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>85</width>
+     <height>40</height>
+    </size>
+   </property>
+   <property name="font">
+    <font>
+     <family>仿宋</family>
+     <pointsize>-1</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+    background-color: #e6e6e6;
+    color: #333;
+    border: 2px solid;
+    border-color: #f5f5f5 #aaaaaa #aaaaaa #f5f5f5;
+    border-radius: 4px;
+    font-size: 25px;
+    padding: 5px;
+}
+
+/* 选中（开）- 凹陷效果 */
+QPushButton:checked {
+    background-color: #d0e8f8;
+    color: #006699;
+    border-color: #aaaaaa #f5f5f5 #f5f5f5 #aaaaaa;
+}
+
+/* 悬浮效果 */
+QPushButton:hover {
+    background-color: #f0f8ff;
+}
+
+/* 按下效果 */
+QPushButton:pressed:checked {
+    border-color: #888888 #ffffff #ffffff #888888;
+    background-color: #b9d9ee;
+}</string>
+   </property>
+   <property name="text">
+    <string>右界</string>
+   </property>
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pbn_light">
+   <property name="geometry">
+    <rect>
+     <x>5</x>
+     <y>226</y>
+     <width>85</width>
+     <height>40</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>85</width>
+     <height>40</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>85</width>
+     <height>40</height>
+    </size>
+   </property>
+   <property name="font">
+    <font>
+     <family>仿宋</family>
+     <pointsize>-1</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+    background-color: #e6e6e6;
+    color: #333;
+    border: 2px solid;
+    border-color: #f5f5f5 #aaaaaa #aaaaaa #f5f5f5;
+    border-radius: 4px;
+    font-size: 25px;
+    padding: 5px;
+}
+
+/* 选中（开）- 凹陷效果 */
+QPushButton:checked {
+    background-color: #d0e8f8;
+    color: #006699;
+    border-color: #aaaaaa #f5f5f5 #f5f5f5 #aaaaaa;
+}
+
+/* 悬浮效果 */
+QPushButton:hover {
+    background-color: #f0f8ff;
+}
+
+/* 按下效果 */
+QPushButton:pressed:checked {
+    border-color: #888888 #ffffff #ffffff #888888;
+    background-color: #b9d9ee;
+}</string>
+   </property>
+   <property name="text">
+    <string>亮度</string>
+   </property>
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pbn_lBoundry">
+   <property name="geometry">
+    <rect>
+     <x>5</x>
+     <y>179</y>
+     <width>85</width>
+     <height>40</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>85</width>
+     <height>40</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>85</width>
+     <height>40</height>
+    </size>
+   </property>
+   <property name="font">
+    <font>
+     <family>仿宋</family>
+     <pointsize>-1</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+    background-color: #e6e6e6;
+    color: #333;
+    border: 2px solid;
+    border-color: #f5f5f5 #aaaaaa #aaaaaa #f5f5f5;
+    border-radius: 4px;
+    font-size: 25px;
+    padding: 5px;
+}
+
+/* 选中（开）- 凹陷效果 */
+QPushButton:checked {
+    background-color: #d0e8f8;
+    color: #006699;
+    border-color: #aaaaaa #f5f5f5 #f5f5f5 #aaaaaa;
+}
+
+/* 悬浮效果 */
+QPushButton:hover {
+    background-color: #f0f8ff;
+}
+
+/* 按下效果 */
+QPushButton:pressed:checked {
+    border-color: #888888 #ffffff #ffffff #888888;
+    background-color: #b9d9ee;
+}</string>
+   </property>
+   <property name="text">
+    <string>左界</string>
+   </property>
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pbn_center">
+   <property name="geometry">
+    <rect>
+     <x>5</x>
+     <y>62</y>
+     <width>180</width>
+     <height>110</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>180</width>
+     <height>110</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>180</width>
+     <height>100</height>
+    </size>
+   </property>
+   <property name="font">
+    <font>
+     <family>仿宋</family>
+     <pointsize>-1</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+    background-color: #e6e6e6;
+    color: #333;
+    border: 2px solid;
+    border-color: #f5f5f5 #aaaaaa #aaaaaa #f5f5f5;
+    border-radius: 4px;
+    font-size: 35px;
+    padding: 5px;
+}
+
+/* 选中（开）- 凹陷效果 */
+QPushButton:checked {
+    background-color: #d0e8f8;
+    color: #006699;
+    border-color: #aaaaaa #f5f5f5 #f5f5f5 #aaaaaa;
+}
+
+/* 悬浮效果 */
+QPushButton:hover {
+    background-color: #f0f8ff;
+}
+
+/* 按下效果 */
+QPushButton:pressed:checked {
+    border-color: #888888 #ffffff #ffffff #888888;
+    background-color: #b9d9ee;
+}</string>
+   </property>
+   <property name="text">
+    <string>目标标定</string>
+   </property>
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_titile">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>5</y>
+     <width>121</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>0</width>
+     <height>60</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>16777215</width>
+     <height>60</height>
+    </size>
+   </property>
+   <property name="font">
+    <font>
+     <family>仿宋</family>
+     <pointsize>-1</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel {
+
+    font-size: 35px;
+}</string>
+   </property>
+   <property name="text">
+    <string>标定</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QFrame" name="frame_disp">
+   <property name="geometry">
+    <rect>
+     <x>190</x>
+     <y>0</y>
+     <width>290</width>
+     <height>272</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>290</width>
+     <height>272</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>290</width>
+     <height>272</height>
+    </size>
+   </property>
+   <property name="font">
+    <font>
+     <family>仿宋</family>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <widget class="QLabel" name="label_disp">
+    <property name="geometry">
+     <rect>
+      <x>5</x>
+      <y>5</y>
+      <width>280</width>
+      <height>210</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>280</width>
+      <height>210</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>240</width>
+      <height>210</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <family>仿宋</family>
+     </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: transparent;
+border-top: 1px solid black; 
+border-right: 1px solid black;  
+border-bottom: 1px solid black; 
+border-left: 1px solid black; </string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="longPressButton" name="pbn_down">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>5</x>
+      <y>220</y>
+      <width>130</width>
+      <height>50</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>130</width>
+      <height>50</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>130</width>
+      <height>50</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <family>仿宋</family>
+      <pointsize>-1</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">        QPushButton {
+            background-color: #4CAF50; /* 绿色背景 */
+            color: white;              /* 白色文字 */
+            border: 2px solid #388E3C; /* 深绿边框 */
+            border-radius: 8px;        /* 圆角 */
+            font-size: 35px;
+        }
+        /* 悬浮状态（鼠标移上去） */
+        QPushButton:hover {
+            background-color: #66BB6A; /* 浅绿背景 */
+        }
+        /* 按下状态（核心：按压效果） */
+        QPushButton:pressed {
+            background-color: #2E7D32; /* 更深的绿色 */
+            border: 2px solid #1B5E20; /* 更暗的边框 */
+            padding-left: 2px;         /* 文字右移2px */
+            padding-top: 2px;          /* 文字下移2px */
+        }</string>
+    </property>
+    <property name="text">
+     <string>&lt;--</string>
+    </property>
+   </widget>
+   <widget class="longPressButton" name="pbn_up">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>155</x>
+      <y>220</y>
+      <width>130</width>
+      <height>50</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>130</width>
+      <height>50</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>130</width>
+      <height>50</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <family>仿宋</family>
+      <pointsize>-1</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">        QPushButton {
+            background-color: #4CAF50; /* 绿色背景 */
+            color: white;              /* 白色文字 */
+            border: 2px solid #388E3C; /* 深绿边框 */
+            border-radius: 8px;        /* 圆角 */
+            font-size: 35px;
+        }
+        /* 悬浮状态（鼠标移上去） */
+        QPushButton:hover {
+            background-color: #66BB6A; /* 浅绿背景 */
+        }
+        /* 按下状态（核心：按压效果） */
+        QPushButton:pressed {
+            background-color: #2E7D32; /* 更深的绿色 */
+            border: 2px solid #1B5E20; /* 更暗的边框 */
+            padding-left: 2px;         /* 文字右移2px */
+            padding-top: 2px;          /* 文字下移2px */
+        }</string>
+    </property>
+    <property name="text">
+     <string>--&gt;</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QFrame" name="frame_mode">
+   <property name="geometry">
+    <rect>
+     <x>190</x>
+     <y>0</y>
+     <width>290</width>
+     <height>272</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>290</width>
+     <height>272</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>290</width>
+     <height>272</height>
+    </size>
+   </property>
+   <property name="font">
+    <font>
+     <family>仿宋</family>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <widget class="Line" name="line_2">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>128</y>
+      <width>295</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>仿宋</family>
+     </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pbn_mode_line">
+    <property name="geometry">
+     <rect>
+      <x>8</x>
+      <y>8</y>
+      <width>90</width>
+      <height>120</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>90</width>
+      <height>120</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>90</width>
+      <height>120</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <family>仿宋</family>
+      <pointsize>-1</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+    background-color: #e6e6e6;
+    color: #333;
+    border: 2px solid;
+    border-color: #f5f5f5 #aaaaaa #aaaaaa #f5f5f5;
+    border-radius: 4px;
+    font-size: 35px;
+    padding: 5px;
+}
+
+/* 选中（开）- 凹陷效果 */
+QPushButton:checked {
+    background-color: #d0e8f8;
+    color: #006699;
+    border-color: #aaaaaa #f5f5f5 #f5f5f5 #aaaaaa;
+}
+
+/* 悬浮效果 */
+QPushButton:hover {
+    background-color: #f0f8ff;
+}
+
+/* 按下效果 */
+QPushButton:pressed:checked {
+    border-color: #888888 #ffffff #ffffff #888888;
+    background-color: #b9d9ee;
+}</string>
+    </property>
+    <property name="text">
+     <string>线段
+模式</string>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pbn_mode_block">
+    <property name="geometry">
+     <rect>
+      <x>8</x>
+      <y>144</y>
+      <width>90</width>
+      <height>120</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>90</width>
+      <height>120</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>90</width>
+      <height>120</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <family>仿宋</family>
+      <pointsize>-1</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+    background-color: #e6e6e6;
+    color: #333;
+    border: 2px solid;
+    border-color: #f5f5f5 #aaaaaa #aaaaaa #f5f5f5;
+    border-radius: 4px;
+    font-size: 35px;
+    padding: 5px;
+}
+
+/* 选中（开）- 凹陷效果 */
+QPushButton:checked {
+    background-color: #d0e8f8;
+    color: #006699;
+    border-color: #aaaaaa #f5f5f5 #f5f5f5 #aaaaaa;
+}
+
+/* 悬浮效果 */
+QPushButton:hover {
+    background-color: #f0f8ff;
+}
+
+/* 按下效果 */
+QPushButton:pressed:checked {
+    border-color: #888888 #ffffff #ffffff #888888;
+    background-color: #b9d9ee;
+}</string>
+    </property>
+    <property name="text">
+     <string>色块
+模式</string>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_block_center">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>140</y>
+      <width>161</width>
+      <height>60</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>0</width>
+      <height>60</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>16777215</width>
+      <height>60</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <family>仿宋</family>
+      <pointsize>-1</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel {
+
+    font-size: 35px;
+}</string>
+    </property>
+    <property name="text">
+     <string>中心位置</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pbn_center_left">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>204</y>
+      <width>50</width>
+      <height>60</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>50</width>
+      <height>60</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>50</width>
+      <height>60</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <family>仿宋</family>
+      <pointsize>-1</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+    background-color: #e6e6e6;
+    color: #333;
+    border: 2px solid;
+    border-color: #f5f5f5 #aaaaaa #aaaaaa #f5f5f5;
+    border-radius: 4px;
+    font-size: 35px;
+    padding: 5px;
+}
+
+/* 选中（开）- 凹陷效果 */
+QPushButton:checked {
+    background-color: #d0e8f8;
+    color: #006699;
+    border-color: #aaaaaa #f5f5f5 #f5f5f5 #aaaaaa;
+}
+
+/* 悬浮效果 */
+QPushButton:hover {
+    background-color: #f0f8ff;
+}
+
+/* 按下效果 */
+QPushButton:pressed:checked {
+    border-color: #888888 #ffffff #ffffff #888888;
+    background-color: #b9d9ee;
+}</string>
+    </property>
+    <property name="text">
+     <string>左</string>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pbn_center_mid">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>204</y>
+      <width>50</width>
+      <height>60</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>50</width>
+      <height>60</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>50</width>
+      <height>60</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <family>仿宋</family>
+      <pointsize>-1</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+    background-color: #e6e6e6;
+    color: #333;
+    border: 2px solid;
+    border-color: #f5f5f5 #aaaaaa #aaaaaa #f5f5f5;
+    border-radius: 4px;
+    font-size: 35px;
+    padding: 5px;
+}
+
+/* 选中（开）- 凹陷效果 */
+QPushButton:checked {
+    background-color: #d0e8f8;
+    color: #006699;
+    border-color: #aaaaaa #f5f5f5 #f5f5f5 #aaaaaa;
+}
+
+/* 悬浮效果 */
+QPushButton:hover {
+    background-color: #f0f8ff;
+}
+
+/* 按下效果 */
+QPushButton:pressed:checked {
+    border-color: #888888 #ffffff #ffffff #888888;
+    background-color: #b9d9ee;
+}</string>
+    </property>
+    <property name="text">
+     <string>中</string>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pbn_center_right">
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>204</y>
+      <width>50</width>
+      <height>60</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>50</width>
+      <height>60</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>50</width>
+      <height>60</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <family>仿宋</family>
+      <pointsize>-1</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+    background-color: #e6e6e6;
+    color: #333;
+    border: 2px solid;
+    border-color: #f5f5f5 #aaaaaa #aaaaaa #f5f5f5;
+    border-radius: 4px;
+    font-size: 35px;
+    padding: 5px;
+}
+
+/* 选中（开）- 凹陷效果 */
+QPushButton:checked {
+    background-color: #d0e8f8;
+    color: #006699;
+    border-color: #aaaaaa #f5f5f5 #f5f5f5 #aaaaaa;
+}
+
+/* 悬浮效果 */
+QPushButton:hover {
+    background-color: #f0f8ff;
+}
+
+/* 按下效果 */
+QPushButton:pressed:checked {
+    border-color: #888888 #ffffff #ffffff #888888;
+    background-color: #b9d9ee;
+}</string>
+    </property>
+    <property name="text">
+     <string>右</string>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+   </widget>
+  </widget>
+  <zorder>frame_disp</zorder>
+  <zorder>pbn_return</zorder>
+  <zorder>pbn_mode</zorder>
+  <zorder>line</zorder>
+  <zorder>pbn_rBoundry</zorder>
+  <zorder>pbn_light</zorder>
+  <zorder>pbn_lBoundry</zorder>
+  <zorder>pbn_center</zorder>
+  <zorder>label_titile</zorder>
+  <zorder>frame_mode</zorder>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>autoCloseDialog</class>
+   <extends>QWidget</extends>
+   <header>autoclosedialog.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>longPressButton</class>
+   <extends>QPushButton</extends>
+   <header location="global">longPressButton.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

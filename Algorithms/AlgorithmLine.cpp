@@ -1,4 +1,4 @@
-﻿#include "Detection.h"
+﻿#include "alg_detection.h"
 
 class LineTracker : public Detection {
 public:
@@ -18,12 +18,12 @@ public:
     void reset() override {
         lockMid = -1;
         lockHue = -1;
-        lostFrames = 0;     
+        lostFrames = 0;
         lastBayesHue = -1;
         isCalibrated = false;
     }
 
-    int calculate(const cv::Mat &img) override {
+    int calculate(const cv::Mat& img) override {
         if (img.empty()) return -1;
 
         if (!isCalibrated) {
@@ -36,7 +36,8 @@ public:
                 lastBayesHue = -1;
                 isCalibrated = true; // 标记标定完成
                 return lockMid;
-            } else {
+            }
+            else {
                 return -1; // 标定失败
             }
         }
@@ -44,8 +45,20 @@ public:
         if (lockMid < 0) return -1;
 
         int extend = 5;
-        cv::Rect roiRect(std::max(0, lBoundary - extend), 60,
-                         std::min(img.cols, rBoundary - lBoundary + 2 * extend), 120);
+        int roiHeight = 120;
+
+        // 2. 动态计算 Y 起点: (图像高度 / 2) - (ROI高度 / 2)
+        int startY = (img.rows / 2) - (roiHeight / 2);
+
+        // 3. 安全检查
+        if (startY < 0) startY = 0;
+        if (startY + roiHeight > img.rows) roiHeight = img.rows - startY;
+
+        // 4. 生成 ROI
+        cv::Rect roiRect(std::max(0, lBoundary - extend),
+            startY,
+            std::min(img.cols, rBoundary - lBoundary + 2 * extend),
+            roiHeight);
 
         if (roiRect.x < 0 || roiRect.width <= 0 || roiRect.x + roiRect.width > img.cols) return -1;
 
@@ -71,7 +84,8 @@ public:
 
         if (Hlow <= Hhigh) {
             cv::inRange(hsv, cv::Scalar(Hlow, Smin, Vmin), cv::Scalar(Hhigh, 255, 255), colorMask);
-        } else {
+        }
+        else {
             cv::Mat m1, m2;
             cv::inRange(hsv, cv::Scalar(0, Smin, Vmin), cv::Scalar(Hhigh, 255, 255), m1);
             cv::inRange(hsv, cv::Scalar(Hlow, Smin, Vmin), cv::Scalar(179, 255, 255), m2);
@@ -146,9 +160,9 @@ private:
 
 extern "C" {
 #ifdef _WIN32
-__declspec(dllexport)
+    __declspec(dllexport)
 #endif
-Detection* CreateAlgorithm() {
-    return new LineTracker();
-}
+        Detection* CreateAlgorithm() {
+        return new LineTracker();
+    }
 }

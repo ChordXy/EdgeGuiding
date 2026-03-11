@@ -4,18 +4,20 @@
 #include <QMainWindow>
 #include <QObject>
 #include <QPixmap>
+#include <QStyle>
 #include <QImage>
 #include <QDebug>
 
 #include "opencv2/opencv.hpp"
 
-#include "calibrationdialog.h"
+#include "dlg_calibration.h"
 #include "autolockwindow.h"
-#include "settingsdialog.h"
-#include "unlockdialog.h"
-#include "uvcapture.h"
+#include "dlg_settings.h"
+#include "dlg_unlock.h"
+#include "m_uvcCapture.h"
 #include "define.h"
-#include "performalgorithms.h"
+#include "alg_performAlgorithms.h"
+#include "m_loggings.h"
 
 
 const QString str_lock_state[] = {
@@ -45,8 +47,8 @@ private slots:
     void on_pbn_calibration_clicked();
     void on_pbn_lock_clicked();
 
-    void onProcessResults(const FrameData &fd);   // 接收采集到的图像
-    void handlerErrors(const QString &msg);         // 接收错误信息
+    void onProcessResults(const FrameData &fd);             // 接收采集到的图像
+    void handlerErrors(int errCode, const QString &msg);    // 接收错误信息
 
 private:
     Ui::MainWindow *ui;
@@ -58,8 +60,14 @@ private:
     ImageCapturer *m_capturer;      // 采集器对象
     performAlgorithms *m_algorithm; // 算法处理器对象
 
+    QPen dashPenR, linePenR;        // 中心位置线的画笔
+    QPixmap tmp;                    // 绘图临时变量
+    QFont font;                     // 字体
 
-    int cur_lock_state = 1;         // 0: Locked   1:Unlocked.
+    PlatformOperator *ledOpt = new PlatformOperator;       // LED控制
+
+
+    int cur_lock_state = _STATE_UNLOCK_SCREEN;         // 0: Locked   1:Unlocked.
     bool tSignalToDialog = false;   // 是否转发信号给Dialog
 
     void initCameraAndAlgorithm();

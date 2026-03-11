@@ -16,37 +16,41 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    DynamicLibLoader.cpp \
-    calibrationdialog.cpp \
-    encrypt.cpp \
+    alg_dynamicLibLoader.cpp \
+    alg_performAlgorithms.cpp \
+    dlg_calibration.cpp \
+    dlg_settings.cpp \
+    dlg_unlock.cpp \
+    longPressButton.cpp \
+    m_encrypt.cpp \
+    m_peripheralOperator.cpp \
+    m_uvcCapture.cpp \
     main.cpp \
-    mainwindow.cpp \
-    performalgorithms.cpp \
-    peripheralOperator.cpp \
-    settingsdialog.cpp \
-    unlockdialog.cpp \
-    uvcapture.cpp
+    mainwindow.cpp
 
 HEADERS += \
-    Detection.h \
-    DynamicLibLoader.h \
+    alg_detection.h \
+    alg_dynamicLibLoader.h \
+    alg_performAlgorithms.h \
     autoclosedialog.h \
     autolockwindow.h \
-    calibrationdialog.h \
     define.h \
-    encrypt.h \
-    mainwindow.h \
-    performalgorithms.h \
-    peripheralOperator.h \
-    settingsdialog.h \
-    unlockdialog.h \
-    uvcapture.h
+    dlg_calibration.h \
+    dlg_settings.h \
+    dlg_unlock.h \
+    longPressButton.h \
+    m_encrypt.h \
+    m_loggings.h \
+    m_peripheralOperator.h \
+    m_uvcCapture.h \
+    mainwindow.h
 
 FORMS += \
-    calibrationdialog.ui \
-    mainwindow.ui \
-    settingsdialog.ui \
-    unlockdialog.ui
+    dlg_calibration.ui \
+    dlg_settings.ui \
+    dlg_unlock.ui \
+    mainwindow.ui
+
 
 INCLUDEPATH += \
     E:\Libs\opencv_MinGW\include
@@ -55,7 +59,6 @@ INCLUDEPATH += \
 
 LIBS += \
     E:\Libs\opencv_MinGW\bin\libopencv*.dll
-
 
 
 # Default rules for deployment.

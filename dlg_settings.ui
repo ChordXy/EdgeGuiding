@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>settingsDialog</class>
+ <widget class="autoCloseDialog" name="settingsDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>480</width>
+    <height>272</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>480</width>
+    <height>272</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>480</width>
+    <height>272</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QPushButton" name="pbn_return">
+   <property name="geometry">
+    <rect>
+     <x>22</x>
+     <y>10</y>
+     <width>50</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>文泉驿正黑</family>
+     <pointsize>26</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+	background-color: #F5F5F5;
+
+	background-image: url(:/image/back.png);
+    background-repeat: no-repeat;  /* 禁止图片重复（必加） */
+    background-position: center;   /* 图片居中（必加） */
+}
+
+/* 按下状态（核心：按压效果） */
+QPushButton:pressed {
+	background-color: #2E7D32; /* 更深的绿色 */
+	border: 2px solid #1B5E20; /* 更暗的边框 */
+	padding-left: 2px;         /* 文字右移2px */
+	padding-top: 2px;          /* 文字下移2px */
+}</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pbn_lockTime">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>80</y>
+     <width>140</width>
+     <height>160</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>文泉驿正黑</family>
+     <pointsize>-1</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+    background-color: #e6e6e6;
+    color: #333;
+    border: 2px solid;
+    border-color: #f5f5f5 #aaaaaa #aaaaaa #f5f5f5;
+    border-radius: 4px;
+    font-size: 30px;
+    padding: 5px;
+}
+
+/* 选中（开）- 凹陷效果 */
+QPushButton:checked {
+    background-color: #d0e8f8;
+    color: #006699;
+    border-color: #aaaaaa #f5f5f5 #f5f5f5 #aaaaaa;
+}
+
+/* 悬浮效果 */
+QPushButton:hover {
+    background-color: #f0f8ff;
+}
+
+/* 按下效果 */
+QPushButton:pressed:checked {
+    border-color: #888888 #ffffff #ffffff #888888;
+    background-color: #b9d9ee;
+}</string>
+   </property>
+   <property name="text">
+    <string>锁屏时间
+---------
+5秒</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pbn_setCode">
+   <property name="geometry">
+    <rect>
+     <x>320</x>
+     <y>80</y>
+     <width>140</width>
+     <height>160</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>文泉驿正黑</family>
+     <pointsize>-1</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+    background-color: #e6e6e6;
+    color: #333;
+    border: 2px solid;
+    border-color: #f5f5f5 #aaaaaa #aaaaaa #f5f5f5;
+    border-radius: 4px;
+    font-size: 30px;
+    padding: 5px;
+}
+
+/* 选中（开）- 凹陷效果 */
+QPushButton:checked {
+    background-color: #d0e8f8;
+    color: #006699;
+    border-color: #aaaaaa #f5f5f5 #f5f5f5 #aaaaaa;
+}
+
+/* 悬浮效果 */
+QPushButton:hover {
+    background-color: #f0f8ff;
+}
+
+/* 按下效果 */
+QPushButton:pressed:checked {
+    border-color: #888888 #ffffff #ffffff #888888;
+    background-color: #b9d9ee;
+}</string>
+   </property>
+   <property name="text">
+    <string>设置
+锁屏密码</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pbn_language">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>80</y>
+     <width>140</width>
+     <height>160</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>文泉驿正黑</family>
+     <pointsize>-1</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+    background-color: #e6e6e6;
+    color: #333;
+    border: 2px solid;
+    border-color: #f5f5f5 #aaaaaa #aaaaaa #f5f5f5;
+    border-radius: 4px;
+    font-size: 30px;
+    padding: 5px;
+}
+
+/* 选中（开）- 凹陷效果 */
+QPushButton:checked {
+    background-color: #d0e8f8;
+    color: #006699;
+    border-color: #aaaaaa #f5f5f5 #f5f5f5 #aaaaaa;
+}
+
+/* 悬浮效果 */
+QPushButton:hover {
+    background-color: #f0f8ff;
+}
+
+/* 按下效果 */
+QPushButton:pressed:checked {
+    border-color: #888888 #ffffff #ffffff #888888;
+    background-color: #b9d9ee;
+}</string>
+   </property>
+   <property name="text">
+    <string>语言
+---------
+中文</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>15</y>
+     <width>181</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>文泉驿正黑</family>
+     <pointsize>-1</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel {
+
+    font-size: 35px;
+}</string>
+   </property>
+   <property name="text">
+    <string>系统设置</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>autoCloseDialog</class>
+   <extends>QWidget</extends>
+   <header>autoclosedialog.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,11 +1,12 @@
-﻿#include "Detection.h"
+﻿#include "alg_detection.h"
 
 class ColorBlockTracker : public Detection {
 public:
     ColorBlockTracker() {
         lastHue = -1;
         lastResultX = -1;
-        isCalibrated = false;
+        //isCalibrated = false;
+        isCalibrated = true;
     }
 
     const char* getAlgorithmName() const override {
@@ -18,7 +19,7 @@ public:
         isCalibrated = false;
     }
 
-    int calculate(const cv::Mat &img) override {
+    int calculate(const cv::Mat& img) override {
         if (img.empty()) return -1;
 
         // --- 阶段1: 自动标定逻辑 ---
@@ -30,16 +31,23 @@ public:
                 lastHue = -1;
                 isCalibrated = true;
                 return lastResultX;
-            } else {
+            }
+            else {
                 return -1;
             }
         }
 
         // --- 阶段2: 正常跟踪逻辑 ---
         int extend = 5;
-        cv::Rect roiRect(std::max(0, lBoundary - extend), 100,
-                         std::min(img.cols, rBoundary - lBoundary + 2 * extend), 40);
+        int roiHeight = 80; // 色块通常只需要窄一点
+        int startY = (img.rows / 2) - (roiHeight / 2);
+        if (startY < 0) startY = 0;
 
+        cv::Rect roiRect(std::max(0, lBoundary - extend),
+            startY,
+            std::min(img.cols, rBoundary - lBoundary + 2 * extend),
+            roiHeight);
+       
         if (roiRect.x < 0 || roiRect.width <= 0) return -1;
 
         cv::Mat roi = img(roiRect);
@@ -62,7 +70,8 @@ public:
 
         if (Hlow <= Hhigh) {
             cv::inRange(hsv, cv::Scalar(Hlow, Smin, Vmin), cv::Scalar(Hhigh, 255, 255), colorMask);
-        } else {
+        }
+        else {
             cv::Mat m1, m2;
             cv::inRange(hsv, cv::Scalar(0, Smin, Vmin), cv::Scalar(Hhigh, 255, 255), m1);
             cv::inRange(hsv, cv::Scalar(Hlow, Smin, Vmin), cv::Scalar(179, 255, 255), m2);
@@ -93,7 +102,8 @@ public:
                     bestDist = dist;
                     mainLabel = i;
                 }
-            } else {
+            }
+            else {
                 if (area > maxArea) {
                     maxArea = area;
                     mainLabel = i;
@@ -127,9 +137,9 @@ private:
 
 extern "C" {
 #ifdef _WIN32
-__declspec(dllexport)
+    __declspec(dllexport)
 #endif
-Detection* CreateAlgorithm() {
-    return new ColorBlockTracker();
-}
+        Detection* CreateAlgorithm() {
+        return new ColorBlockTracker();
+    }
 }
