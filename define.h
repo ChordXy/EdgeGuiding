@@ -14,8 +14,8 @@
 #include "opencv2/opencv.hpp"
 
 #ifdef Q_OS_WIN
-    #define LINE_ALGORITHM      "E:/Projects/Qt/myDemo/Algorithms/AlgorithmLine.dll"
-    #define BLOCK_ALGORITHM     "E:/Projects/Qt/myDemo/Algorithms/AlgorithmBlock.dll"
+    #define LINE_ALGORITHM      "E:/QT/project/EdgeGuiding-main/Algorithms/AlgorithmLine.dll"
+    #define BLOCK_ALGORITHM     "E:/QT/project/EdgeGuiding-main/Algorithms/AlgorithmBlock.dll"
     #define INI_FILE_PATH       "D:/config.ini"
     #define SYS_INFO_PATH       "D:/sys_info"
     #define ENCRYPT_CODE_PATH   "D:/code"

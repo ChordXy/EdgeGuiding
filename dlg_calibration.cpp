@@ -1,6 +1,6 @@
 #include "dlg_calibration.h"
 #include "ui_dlg_calibration.h"
-
+#include <QDebug>
 
 calibrationDialog::calibrationDialog(AppConfigs ac, performAlgorithms *tAlgorithm, PlatformOperator *lOpt, QWidget *parent) :
     autoCloseDialog(parent),
@@ -112,8 +112,7 @@ void calibrationDialog::onReceiveImage(const FrameData &fd) {
         QRect textRectR(curAC.rboundry - 25, 30, 55, 25);
         painter.fillRect(textRectR, Qt::white);
         painter.setPen(Qt::black);
-        painter.drawText(textRectR, Qt::AlignCenter, "右边界");
-
+        painter.drawText(textRectR, Qt::AlignCenter, "右边界"); 
     }
 
     // 如果计算结果中，center不等于-1，即表示检测到边缘，需要显示
@@ -138,6 +137,7 @@ void calibrationDialog::onReceiveImage(const FrameData &fd) {
         painter.fillRect(textRectM, Qt::red);
         painter.setPen(Qt::white);
         painter.drawText(textRectM, Qt::AlignCenter, "中心");
+
     }
 
     ui->label_disp->setPixmap(tmp.scaled(ui->label_disp->size(),
@@ -381,21 +381,25 @@ void calibrationDialog::handler_btnGroup_mode(int id) {
 
     curAC.mode = id;
     logging(QString("Mode = %1").arg(curAC.mode), "Calibration -> handler_btnGroup");
-
+    saveSettings(curAC);
     // 色块模式时，需要开放对线位置按钮
     foreach (QAbstractButton *btn, btnTrackGroup->buttons())
         btn->setEnabled(curAC.mode == 1);
+
 }
 
 void calibrationDialog::handler_btnGroup_track(int id) {
     // 色块模式下，对线跟踪 左 中 右     色块模式-对线中心  0:左  1:中  2:右
     curAC.track = id;
     curAlgorithm->setTrack(curAC.track);
+    saveSettings(curAC);
+
 }
 
 
 /*🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦*/
 void calibrationDialog::on_pbn_up_clicked() {
+
     switch(onSetting) {
     case(_SETTINGS_MODE) :
         return;
@@ -403,11 +407,13 @@ void calibrationDialog::on_pbn_up_clicked() {
     case(_SETTINGS_LBOUNDRY) :
         curAC.lboundry = qMin(curAC.rboundry - MIN_BOUNDARY_INTER, curAC.lboundry + ADJUST_INTERVAL);
         curAlgorithm->setBoundary(curAC.lboundry, curAC.rboundry);
+        saveSettings(curAC);
         return;
 
     case(_SETTINGS_RBOUNDRY) :
         curAC.rboundry = qMin(CAMERA_WIDTH, curAC.rboundry + ADJUST_INTERVAL);
         curAlgorithm->setBoundary(curAC.lboundry, curAC.rboundry);
+        saveSettings(curAC);
         return;
 
     case(_SETTINGS_LIGHT) :
@@ -417,6 +423,7 @@ void calibrationDialog::on_pbn_up_clicked() {
         std::sprintf(duty_light, "%d", int(10000 * (10 - curAC.light)));
         ledOpt->fileOperate("duty_cycle", duty_light);
         logging(QString("灯光亮度 %1").arg(curAC.light), "Calibration -> on_pbn_up");
+        saveSettings(curAC);
         return;
 
     case(_SETTINGS_TARGET) :
@@ -425,8 +432,9 @@ void calibrationDialog::on_pbn_up_clicked() {
         curAC.mid = qMax(curAC.mid, curAC.lboundry);
         curAlgorithm->setMiddle(curAC.mid);
         logging(QString("Cur Middle %1").arg(curAC.mid), "Calibration -> on_pbn_up");
+        saveSettings(curAC);
         return;
-    }
+    }  
 }
 
 void calibrationDialog::on_pbn_down_clicked() {

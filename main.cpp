@@ -12,10 +12,10 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    if (!checkID()) {
-        shutdownSystem();
-        return 0;
-    }
+//    if (!checkID()) {
+//        shutdownSystem();
+//        return 0;
+//    }
 
     qRegisterMetaType<cv::Mat>("cv::Mat");
     qRegisterMetaType<FrameData>("FrameData");

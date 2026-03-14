@@ -27,7 +27,7 @@ void settingsDialog::refreshUI(int nBtn) {
     ///         0  : language
     ///         1  : lock_time
     ///         2  : reserved
-
+    saveSettings(curAC);
     switch (nBtn) {
     case(0)   :     ui->pbn_language->setText(QString("语言\n-------\n%1").arg(_languages[curAC.language])); return;
     case(1)   :     ui->pbn_lockTime->setText(QString("锁屏时间\n-------\n%1秒").arg(_lock_screen_time[curAC.locktime])); return;

@@ -25,7 +25,7 @@ public:
     void initParameters(int t_alg, int t_lb, int t_rb, int t_mid, int t_lmr) { m_alg = t_alg; m_lb = t_lb; m_rb = t_rb; m_mid = t_mid; m_lmr = t_lmr; }
     void startDetect();
     void stopDetect();
-
+    double ratioMid;
 public slots:
     void recvImage(const cv::Mat &mat);                 // 处理图像
     void recvErrors(int errCode, const QString &msg);   // 槽函数
@@ -53,7 +53,7 @@ private:
     PlatformOperator pwmOpt;
     int duty_pwm;
     char duty_pwm_str[10];
-    double ratioMid;
+
 
     int m_alg, m_lb, m_rb, m_mid, m_lmr;        // 仅用于初始化
 

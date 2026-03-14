@@ -125,6 +125,8 @@ void performAlgorithms::recvImage(const cv::Mat &mat) {
         return;
     }
     logging(QString("当前计算偏移量 %1，PWM = %2 ").arg(ratioMid).arg(duty_pwm / 1000), "Algorithm -> recvImage");
+
+
 }
 
 void performAlgorithms::recvErrors(int errCode, const QString &msg) {
