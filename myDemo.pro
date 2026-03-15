@@ -53,12 +53,12 @@ FORMS += \
 
 
 INCLUDEPATH += \
-    E:\Libs\opencv_MinGW\include
-    E:\Libs\opencv_MinGW\include\opencv2
+    E:\QT\Tools\opencv_MinGW\include
+    E:\QT\Tools\opencv_MinGW\include\opencv2
 
 
 LIBS += \
-    E:\Libs\opencv_MinGW\bin\libopencv*.dll
+    E:\QT\Tools\opencv_MinGW\bin\libopencv*.dll
 
 
 # Default rules for deployment.

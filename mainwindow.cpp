@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
 MainWindow::MainWindow(QWidget *parent)
     : autoLockWindow(parent)
     , ui(new Ui::MainWindow) {
@@ -117,6 +116,7 @@ void MainWindow::on_pbn_settings_clicked() {
     //   - 设置项更新内容
     //     - 用户态： 锁屏时间（locktime）、语言（language）
     //     - 设备态： 模式、对线中心、亮度、中心位置、左边界、右边界
+    ac = loadSettings();
     settingsDialog sD(ac, this);
     sD.setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
     sD.setWindowModality(Qt::WindowModal);
@@ -215,6 +215,7 @@ void MainWindow::on_pbn_calibration_clicked() {
     //     - 用户态： 锁屏时间（locktime）、语言（language）
     //     - 设备态： 模式、对线中心、亮度、中心位置、左边界、右边界
     tSignalToDialog = true;
+    ac = loadSettings();
     calibrationDialog calD(ac, m_algorithm, ledOpt, this);
     connect(this, &MainWindow::resultToDialog, &calD, &calibrationDialog::onReceiveImage);
     calD.setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
@@ -248,12 +249,14 @@ void MainWindow::onProcessResults(const FrameData &fd) {
             painter.drawLine(QPoint(fd.center + DRAW_VLINE_I, DRAW_VLINE_S), QPoint(fd.center + DRAW_VLINE_I, DRAW_VLINE_E));
             painter.drawLine(QPoint(fd.center + DRAW_RLINE_I, DRAW_RLINE_S), QPoint(fd.center + DRAW_VLINE_I, DRAW_VLINE_S));
             painter.drawLine(QPoint(fd.center + DRAW_RLINE_I, DRAW_RLINE_E), QPoint(fd.center + DRAW_VLINE_I, DRAW_VLINE_E));
-            // 4.3 检测中心（文本，黄底红字）
+            // 4.3 检测中心和偏移量（文本，黄底红字）
             painter.setFont(font);
-            QRect textRectM(fd.center - 15, 5, 40, 25);
+            QRect textRectM(fd.center - 30, 5, 60, 25);
             painter.fillRect(textRectM, Qt::red);
             painter.setPen(Qt::white);
-            painter.drawText(textRectM, Qt::AlignCenter, "中心");
+            painter.drawText(textRectM, Qt::AlignCenter, "中心 "+QString::number(m_algorithm->getRatioMid()));
+
+
         }
 
         ui->label->setPixmap(tmp.scaled(ui->label->size(),
