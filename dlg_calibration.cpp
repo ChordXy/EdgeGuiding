@@ -1,6 +1,7 @@
 #include "dlg_calibration.h"
 #include "ui_dlg_calibration.h"
 
+
 calibrationDialog::calibrationDialog(AppConfigs ac, performAlgorithms *tAlgorithm, PlatformOperator *lOpt, QWidget *parent) :
     autoCloseDialog(parent),
     ui(new Ui::calibrationDialog)
