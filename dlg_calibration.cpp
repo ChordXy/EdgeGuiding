@@ -112,7 +112,8 @@ void calibrationDialog::onReceiveImage(const FrameData &fd) {
         QRect textRectR(curAC.rboundry - 25, 30, 55, 25);
         painter.fillRect(textRectR, Qt::white);
         painter.setPen(Qt::black);
-        painter.drawText(textRectR, Qt::AlignCenter, "右边界"); 
+        painter.drawText(textRectR, Qt::AlignCenter, "右边界");
+
     }
 
     // 如果计算结果中，center不等于-1，即表示检测到边缘，需要显示
@@ -137,7 +138,6 @@ void calibrationDialog::onReceiveImage(const FrameData &fd) {
         painter.fillRect(textRectM, Qt::red);
         painter.setPen(Qt::white);
         painter.drawText(textRectM, Qt::AlignCenter, "中心");
-
     }
 
     ui->label_disp->setPixmap(tmp.scaled(ui->label_disp->size(),
@@ -385,7 +385,6 @@ void calibrationDialog::handler_btnGroup_mode(int id) {
     // 色块模式时，需要开放对线位置按钮
     foreach (QAbstractButton *btn, btnTrackGroup->buttons())
         btn->setEnabled(curAC.mode == 1);
-
 }
 
 void calibrationDialog::handler_btnGroup_track(int id) {
