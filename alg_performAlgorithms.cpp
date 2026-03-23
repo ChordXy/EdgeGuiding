@@ -57,7 +57,7 @@ void performAlgorithms::initAlgorithm() {
 
     setAlgorithm(m_alg);
     setBoundary(m_lb, m_rb);
-    setMiddle(m_mid);
+    //setMiddle(m_mid);
     setTrack(m_lmr);
     logging(QString(" >>> 初始化\n\t > Alg=%1\n\t > L=%2 R=%3\n\t > Mid=%4\n\t > LMR=%5").arg(m_alg).arg(m_lb).arg(m_rb).arg(m_mid).arg(m_lmr), "Algorithm -> init");
 
