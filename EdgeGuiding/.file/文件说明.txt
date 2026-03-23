@@ -1,0 +1,4 @@
+1. AlgorithmBlock.so		色块处理算法（Linux下动态链接库）
+2. AlgorithmLine.so		线段处理算法（Linux下动态链接库）
+3. codeDemo			生成加密代码
+4. myDemo				软件

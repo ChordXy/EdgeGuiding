@@ -36,7 +36,7 @@ protected:
     int rBoundary = 320;
     int middle = 160;
     int lmr = 0;        // 0:Left, 1:Mid, 2:Right
-    int targetHue=0;
+    int targetHue= 0 ;
 
     // 通用贝叶斯 Hue 选择逻辑
     int selectHueBayes(const cv::Mat& hsv, int targetHue, int lastHue) {
