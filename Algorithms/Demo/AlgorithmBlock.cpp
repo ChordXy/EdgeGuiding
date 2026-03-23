@@ -1,35 +1,231 @@
+﻿#include "alg_detection.h"
+#include <fstream>
 #include <string>
-
-#include "Detection.h"
-#include "opencv2/opencv.hpp"
-
-#define version "Track Block v1.0"
-
-// 加法算法实现
-class AlgorithmDemo : public Detection {
+#include <sstream>
+#define INI_FILE_PATH       "D:/config.ini"
+class ColorBlockTracker : public Detection {
 public:
-    int calculate(const cv::Mat & img) override {
 
-        return 50; 
+
+    int loadConfig() {
+        std::ifstream file(INI_FILE_PATH);
+        if (!file.is_open()) return -1;
+
+        std::string line;
+
+        while (std::getline(file, line)) {
+            // 去掉可能的 \r
+            if (!line.empty() && line.back() == '\r') {
+                line.pop_back();
+            }
+
+
+            // 找 TargetHue
+
+            if (line.find("LastHue=") == 0) {
+                lastHue = std::stoi(line.substr(9));
+            }else if (line.find("LastResultX=") == 0) {
+                lastResultX = std::stoi(line.substr(13));
+            }else if (line.find("IsCalibrated=") == 0) {
+                std::string val = line.substr(13);
+                isCalibrated = (val == "1" || val == "true" || val == "True");
+            }
+        }
+        return -1;
+    }
+
+    bool saveConfig(int newHue, int ReasultX , bool isCalibrated) {
+        std::ifstream in(INI_FILE_PATH);
+        if (!in.is_open()) return false;
+
+        std::stringstream buffer;
+        std::string line;
+
+        bool inUserSection = false;
+        bool found = false;
+
+        while (std::getline(in, line)) {
+            std::string originalLine = line;
+
+            // 去掉 \r
+            if (!line.empty() && line.back() == '\r') {
+                line.pop_back();
+            }
+
+            // 判断 section
+            if (line.find("[User]") != std::string::npos) {
+                inUserSection = true;
+            } else if (!line.empty() && line[0] == '[') {
+                inUserSection = false;
+            }
+
+            if (inUserSection) {
+                if (line.find("LastHue=") == 0) {
+                    buffer << "LastHue=" << lastHue << "\n";
+                    continue;
+                }
+                else if (line.find("LastResultX=") == 0) {
+                    buffer << "LastResultX=" << lastResultX << "\n";
+                    continue;
+                }
+                else if (line.find("IsCalibrated=") == 0) {
+                    buffer << "IsCalibrated=" << (isCalibrated ? 1 : 0) << "\n";
+                    continue;
+                }
+            }
+            buffer << originalLine << "\n";
+        }
+
+        in.close();
+
+        // 如果没有 TargetHue，可以选择追加
+        if (!found) {
+            buffer << "\n[User]\nTargetHue=" << newHue << "\n";
+        }
+
+        // 写回文件
+        std::ofstream out(INI_FILE_PATH);
+        if (!out.is_open()) return false;
+
+        out << buffer.str();
+        return true;
+    }
+
+    ColorBlockTracker() {
+        loadConfig();
     }
 
     const char* getAlgorithmName() const override {
-        return m_name.c_str();
+        return "ColorBlock_v1.0";
+    }
+
+    void reset() override {
+        lastHue = -1;
+        lastResultX = -1;
+        isCalibrated = false;
+    }
+
+    int calculate(const cv::Mat& img) override {
+        if (img.empty()) return -1;
+
+        // --- 阶段1: 自动标定逻辑 ---
+        if (!isCalibrated) {
+            int hue = internalCalibrate(img, this->middle);
+            if (hue >= 0) {
+                targetHue = hue;
+                lastResultX = this->middle; // 初始位置
+                lastHue = -1;
+                isCalibrated = true;
+                return lastResultX;
+            }
+            else {
+                return -1;
+            }
+        }
+
+        // --- 阶段2: 正常跟踪逻辑 ---
+        int extend = 5;
+        int roiHeight = 80; // 色块通常只需要窄一点
+        int startY = (img.rows / 2) - (roiHeight / 2);
+        if (startY < 0) startY = 0;
+
+        cv::Rect roiRect(std::max(0, lBoundary - extend),
+            startY,
+            std::min(img.cols, rBoundary - lBoundary + 2 * extend),
+            roiHeight);
+       
+        if (roiRect.x < 0 || roiRect.width <= 0) return -1;
+
+        cv::Mat roi = img(roiRect);
+        cv::Mat hsv;
+        cv::cvtColor(roi, hsv, cv::COLOR_BGR2HSV);
+        cv::GaussianBlur(hsv, hsv, cv::Size(3, 3), 0);
+
+        int bestH = selectHueBayes(hsv, targetHue, lastHue);
+        if (bestH < 0) return -1;
+        lastHue = bestH;
+
+        int tol = 8;
+        cv::Scalar meanVal = cv::mean(hsv);
+        int Smin = std::max(50, int(meanVal[1] * 0.5));
+        int Vmin = std::max(50, int(meanVal[2] * 0.5));
+
+        int Hlow = (bestH - tol + 180) % 180;
+        int Hhigh = (bestH + tol) % 180;
+        cv::Mat colorMask;
+
+        if (Hlow <= Hhigh) {
+            cv::inRange(hsv, cv::Scalar(Hlow, Smin, Vmin), cv::Scalar(Hhigh, 255, 255), colorMask);
+        }
+        else {
+            cv::Mat m1, m2;
+            cv::inRange(hsv, cv::Scalar(0, Smin, Vmin), cv::Scalar(Hhigh, 255, 255), m1);
+            cv::inRange(hsv, cv::Scalar(Hlow, Smin, Vmin), cv::Scalar(179, 255, 255), m2);
+            cv::bitwise_or(m1, m2, colorMask);
+        }
+
+        cv::Mat k = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(3, 1));
+        cv::dilate(colorMask, colorMask, k);
+
+        cv::Mat labels, stats, centroids;
+        int nLabels = cv::connectedComponentsWithStats(colorMask, labels, stats, centroids, 8, CV_32S);
+
+        int mainLabel = -1;
+        int maxArea = 0;
+        int bestDist = 2147483647;
+
+        for (int i = 1; i < nLabels; ++i) {
+            int area = stats.at<int>(i, cv::CC_STAT_AREA);
+            if (area < 80) continue;
+
+            int left = stats.at<int>(i, cv::CC_STAT_LEFT) + roiRect.x;
+            int width = stats.at<int>(i, cv::CC_STAT_WIDTH);
+            int mid = left + width / 2;
+
+            if (lastResultX >= 0) {
+                int dist = std::abs(mid - lastResultX);
+                if (dist < bestDist) {
+                    bestDist = dist;
+                    mainLabel = i;
+                }
+            }
+            else {
+                if (area > maxArea) {
+                    maxArea = area;
+                    mainLabel = i;
+                }
+            }
+        }
+
+        int finalX = -1;
+        if (mainLabel > 0) {
+            int left = stats.at<int>(mainLabel, cv::CC_STAT_LEFT) + roiRect.x;
+            int width = stats.at<int>(mainLabel, cv::CC_STAT_WIDTH);
+            int right = left + width;
+            int mid = left + width / 2;
+
+            if (lmr == 0)      finalX = left;
+            else if (lmr == 1) finalX = mid;
+            else if (lmr == 2) finalX = right;
+            else               finalX = mid;
+
+            lastResultX = finalX;
+        }
+        saveConfig(lastHue, lastResultX, isCalibrated);
+        return finalX;
     }
 
 private:
-    std::string m_name = version;
+    int lastHue;
+    int lastResultX;
+    bool isCalibrated;
 };
 
-
-
-
-// ========== 导出创建实例的函数（必须命名为CreateAlgorithm） ==========
 extern "C" {
 #ifdef _WIN32
     __declspec(dllexport)
 #endif
-    Detection* CreateAlgorithm() {
-        return new AlgorithmDemo();
+        Detection* CreateAlgorithm() {
+        return new ColorBlockTracker();
     }
 }
