@@ -6,6 +6,7 @@
 #include <cmath>
 #include <algorithm>
 #include <string>
+
 #define PIXEL_TO_MM         100
 #define MM_TO_MILLIAMP      1
 

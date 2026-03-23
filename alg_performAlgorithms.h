@@ -22,7 +22,7 @@ public:
     void setBoundary(int l, int r) { Algs[curAlg]->setBoundary(l, r); }
     void setMiddle(int m) { Algs[curAlg]->setMiddle(m); }
     void setTrack(int lmr) { Algs[curAlg]->setPosition(lmr); }
-    void initParameters(int t_alg, int t_lb, int t_rb, int t_mid, int t_lmr) { m_alg = t_alg; m_lb = t_lb; m_rb = t_rb; m_mid = t_mid; m_lmr = t_lmr;}
+    void initParameters(int t_alg, int t_lb, int t_rb, int t_mid, int t_lmr) { m_alg = t_alg; m_lb = t_lb; m_rb = t_rb; m_mid = t_mid; m_lmr = t_lmr; }
     void startDetect();
     void stopDetect();
     double getRatioMid(){return ratioMid;}
@@ -55,7 +55,7 @@ private:
     char duty_pwm_str[10];
     double ratioMid;
 
-    int m_alg, m_lb, m_rb, m_mid, m_lmr, m_th;        // 仅用于初始化
+    int m_alg, m_lb, m_rb, m_mid, m_lmr;        // 仅用于初始化
 
     void initAlgorithm();
     QPixmap cvMatToPixmap(const cv::Mat &mat);

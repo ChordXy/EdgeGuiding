@@ -6,6 +6,7 @@
 #include <cmath>
 #include <algorithm>
 #include <string>
+
 #define PIXEL_TO_MM         100
 #define MM_TO_MILLIAMP      1
 
@@ -17,11 +18,11 @@ public:
     virtual int calculate(const cv::Mat& img) = 0;
 
     virtual void reset() = 0;
+
     // 参数设置
     void setBoundary(const int l, const int r) { lBoundary = l; rBoundary = r; }
     void setMiddle(const int m) { reset(); middle = m; }
     void setPosition(const int p) { lmr = p; } // 0:Left, 1:Mid, 2:Right
-    void setTargetHue(const int th){targetHue=th;}
 
     // 辅助计算
     double calCurrent(int cx) {
@@ -35,6 +36,7 @@ protected:
     int rBoundary = 320;
     int middle = 160;
     int lmr = 0;        // 0:Left, 1:Mid, 2:Right
+    int targetHue=0;
 
     // 通用贝叶斯 Hue 选择逻辑
     int selectHueBayes(const cv::Mat& hsv, int targetHue, int lastHue) {
