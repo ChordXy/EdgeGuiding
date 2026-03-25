@@ -2,109 +2,23 @@
 #include <fstream>
 #include <string>
 #include <sstream>
-#define INI_FILE_PATH       "D:/config.ini"
+#define INI_FILE_PATH       "/opt/config.ini"
 class LineTracker : public Detection {
 public:
-
-
-    void loadDllConfig() {
-        std::ifstream file(INI_FILE_PATH);
-        if (!file.is_open()) return;
-
-        std::string line;
-        bool inUserSection = false;
-
-        while (std::getline(file, line)) {
-            if (!line.empty() && line.back() == '\r') {
-                line.pop_back();
-            }
-
-            // 判断 section
-            if (line.find("[User]") != std::string::npos) {
-                inUserSection = true;
-                continue;
-            } else if (!line.empty() && line[0] == '[') {
-                inUserSection = false;
-            }
-
-            if (inUserSection) {
-                if (line.find("TargetHue=") == 0) {
-                    lockHue = std::stoi(line.substr(10));
-                    lastBayesHue=lockHue;
-                    targetHue=lockHue;
-                }
-                else if (line.find("LastResultX=") == 0) {
-                    lockMid = std::stoi(line.substr(13));
-                }
-                else if (line.find("IsCalibrated=") == 0) {
-                    std::string val = line.substr(13);
-                    isCalibrated = (val == "1" || val == "true" || val == "True");
-                }
-
-
-
-            }
+    //根据读取的配置文件恢复上次跟踪
+    void recovery(const DllConfig* config) {
+        if (!config) {
+            std::cout << "Config is null!" << std::endl;
+            return;
         }
-        return;
+        this->targetHue=config->targetHue;
+        this->lockHue=config->lockHue;
+        this->lockMid=config->lockMid;
+        this->lastBayesHue=config->lastBayesHue;
+        lostFrames=30;
+        isCalibrated=true;
     }
 
-    void saveDllConfig() {
-        std::ifstream in(INI_FILE_PATH);
-        if (!in.is_open()) return;
-
-        std::stringstream buffer;
-        std::string line;
-        bool foundTargetHue=false;
-        bool foundLastResultX=false;
-        bool foundIsCalibrated=false;
-        bool inUserSection = false;
-
-        while (std::getline(in, line)) {
-            std::string originalLine = line;
-
-            if (!line.empty() && line.back() == '\r') {
-                line.pop_back();
-            }
-
-            // 判断 section
-            if (line.find("[User]") != std::string::npos) {
-                inUserSection = true;
-            }
-            else if (!line.empty() && line[0] == '[') {
-                inUserSection = false;
-            }
-
-            if (inUserSection) {
-                if (line.find("TargetHue=") == 0) {
-                    buffer << "TargetHue=" << targetHue << "\n";
-                    foundTargetHue=true;
-                    continue;
-                }
-                else if (line.find("LastResultX=") == 0) {
-                    buffer << "LastResultX=" << lockMid << "\n";
-                    foundLastResultX=true;
-                    continue;
-                }
-                else if (line.find("IsCalibrated=") == 0) {
-                    buffer << "IsCalibrated=" << isCalibrated << "\n";
-                    foundIsCalibrated=true;
-                    continue;
-                }
-            }
-
-            buffer << originalLine << "\n";
-        }
-        if(!foundTargetHue)buffer <<"TargetHue=" << targetHue << "\n";
-        if(!foundLastResultX)buffer << "LastResultX=" << lockMid << "\n";
-        if(!foundIsCalibrated)buffer<<"IsCalibrated="<<isCalibrated<<"\n";
-        in.close();
-
-        std::ofstream out(INI_FILE_PATH);
-        if (!out.is_open()) return;
-
-        out << buffer.str();
-        return;
-    }
 
     LineTracker() {
         // 构造时初始化
@@ -113,7 +27,8 @@ public:
         lostFrames = 0;
         lastBayesHue = -1;
         isCalibrated = false;
-        loadDllConfig();
+        DllConfig* load=loadConfig();
+        recovery(load);
     }
 
     const char* getAlgorithmName() const override {
@@ -247,7 +162,14 @@ public:
                 return -1;
             }
         }
-        saveDllConfig();
+        if(found){
+            DllConfig* dc=new DllConfig();
+            dc->lockHue=this->lockHue;
+            dc->lockMid=this->lockMid;
+            dc->targetHue=this->targetHue;
+            dc->lastBayesHue=this->lastBayesHue;
+            saveDllConfig(dc);
+        }
         return lockMid;
     }
 

@@ -1,113 +1,25 @@
 ﻿#include "alg_detection.h"
-#include <fstream>
-#include <string>
-#include <sstream>
-#define INI_FILE_PATH       "D:/config.ini"
+
 class ColorBlockTracker : public Detection {
 public:
-
-    void loadDllConfig() {
-        std::ifstream file(INI_FILE_PATH);
-        if (!file.is_open()) return;
-
-        std::string line;
-        bool inUserSection = false;
-
-        while (std::getline(file, line)) {
-            if (!line.empty() && line.back() == '\r') {
-                line.pop_back();
-            }
-
-            // 判断 section
-            if (line.find("[User]") != std::string::npos) {
-                inUserSection = true;
-                continue;
-            } else if (!line.empty() && line[0] == '[') {
-                inUserSection = false;
-            }
-
-            if (inUserSection) {
-                if (line.find("TargetHue=") == 0) {
-                    targetHue = std::stoi(line.substr(10));
-                    lastHue=targetHue;
-                }
-                else if (line.find("LastResultX=") == 0) {
-                    lastResultX = std::stoi(line.substr(13));
-                }
-                else if (line.find("IsCalibrated=") == 0) {
-                    std::string val = line.substr(13);
-                    isCalibrated = (val == "1" || val == "true" || val == "True");
-                }
-
-            }
+    //根据读取的配置文件恢复上次跟踪
+    void recovery(const DllConfig* config) {
+        if (!config) {
+            std::cout << "Config is null!" << std::endl;
+            return;
         }
-        return;
-    }
-
-    void saveDllConfig() {
-        std::ifstream in(INI_FILE_PATH);
-        if (!in.is_open()) return;
-
-        std::stringstream buffer;
-        std::string line;
-        bool foundTargetHue=false;
-        bool foundLastResultX=false;
-        bool foundIsCalibrated=false;
-        bool inUserSection = false;
-
-        while (std::getline(in, line)) {
-            std::string originalLine = line;
-
-            if (!line.empty() && line.back() == '\r') {
-                line.pop_back();
-            }
-
-            // 判断 section
-            if (line.find("[User]") != std::string::npos) {
-                inUserSection = true;
-            }
-            else if (!line.empty() && line[0] == '[') {
-                inUserSection = false;
-            }
-
-            if (inUserSection) {
-                if (line.find("TargetHue=") == 0) {
-                    buffer << "TargetHue=" << targetHue << "\n";
-                    foundTargetHue=true;
-                    continue;
-                }
-                else if (line.find("LastResultX=") == 0) {
-                    buffer << "LastResultX=" << lastResultX << "\n";
-                    foundLastResultX=true;
-                    continue;
-                }
-                else if (line.find("IsCalibrated=") == 0) {
-                    buffer << "IsCalibrated=" << isCalibrated << "\n";
-                    foundIsCalibrated=true;
-                    continue;
-                }
-            }
-
-            buffer << originalLine << "\n";
-        }
-        if(!foundTargetHue)buffer <<"TargetHue=" << targetHue << "\n";
-        if(!foundLastResultX)buffer << "LastResultX=" << lastResultX << "\n";
-        if(!foundIsCalibrated)buffer<<"IsCalibrated="<<isCalibrated<<"\n";
-        in.close();
-
-        std::ofstream out(INI_FILE_PATH);
-        if (!out.is_open()) return;
-
-        out << buffer.str();
-        return;
+        this->targetHue=config->targetHue;
+        this->lastHue=config->lastHue;
+        this->lastResultX=config->lastResultX;
+        isCalibrated=true;
     }
 
     ColorBlockTracker() {
         lastHue = -1;
         lastResultX = -1;
-        //isCalibrated = false;
-        isCalibrated = true;
-        loadDllConfig();
+        isCalibrated = false;
+        DllConfig* load=loadConfig();
+        recovery(load);
     }
 
     const char* getAlgorithmName() const override {
@@ -225,7 +137,13 @@ public:
 
             lastResultX = finalX;
         }
-        saveDllConfig();
+        if(isCalibrated){
+            DllConfig* dc=new DllConfig();
+            dc->lastHue=this->lastHue;
+            dc->lastResultX=this->lastResultX;
+            dc->targetHue=this->targetHue;
+            saveDllConfig(dc);
+        }
         return finalX;
     }
 
@@ -234,6 +152,9 @@ private:
     int lastResultX;
     bool isCalibrated;
 };
+
+
+
 
 extern "C" {
 #ifdef _WIN32
