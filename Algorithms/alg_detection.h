@@ -16,12 +16,8 @@
 std::string getConfigPath() {
 #ifdef _WIN32
     return "D:/config.ini";   // Windows
-#elif __linux__
-    return "/opt/config.ini";  // Linux
-#elif __APPLE__
-    return "/usr/local/etc/config.ini"; // macOS
 #else
-    return "./config.ini"; // fallback
+    return "/opt/config.ini";  // Linux
 #endif
 }
 
@@ -77,20 +73,22 @@ protected:
         bool foundLockHue=false;
         bool foundLastBayesHue=false;
         bool inUserSection = false;
+        bool hasUserSection=false;
         while (std::getline(in, line)) {
             std::string originalLine = line;
 
             if (!line.empty() && line.back() == '\r') {
                 line.pop_back();
             }
-
             // 判断 section
             if (line.find("[User]") != std::string::npos) {
                 inUserSection = true;
+                hasUserSection=true;
             }
             else if (!line.empty() && line[0] == '[') {
                 inUserSection = false;
             }
+
 
             if (inUserSection) {
                 if (line.find("TargetHue=") == 0) {
@@ -124,9 +122,9 @@ protected:
                     continue;
                 }
             }
-
             buffer << originalLine << "\n";
         }
+        if(!hasUserSection)buffer<<"[User]"<<"\n";
         if(!foundTargetHue)buffer <<"TargetHue=" << config->targetHue << "\n";
         if(!foundLastHue)buffer <<"LastHue=" << config->lastHue << "\n";
         if(!foundLastResultX)buffer << "LastResultX=" << config->lastResultX << "\n";
@@ -149,12 +147,10 @@ protected:
         DllConfig* config = new DllConfig();
         std::string line;
         bool inUserSection = false;
-
         while (std::getline(file, line)) {
             if (!line.empty() && line.back() == '\r') {
                 line.pop_back();
             }
-
             // 判断 section
             if (line.find("[User]") != std::string::npos) {
                 inUserSection = true;
@@ -162,22 +158,18 @@ protected:
             } else if (!line.empty() && line[0] == '[') {
                 inUserSection = false;
             }
+
             //读取数据
             if (inUserSection) {
                 if (line.find("TargetHue=") == 0)config->targetHue = std::stoi(line.substr(10));
-
                 if (line.find("LastHue=") == 0)config->lastHue = std::stoi(line.substr(8));
-
                 if (line.find("LastResultX=") == 0)config->lastResultX = std::stoi(line.substr(12));
-
                 if (line.find("LockMid=") == 0)config->lockMid = std::stoi(line.substr(8));
-
                 if (line.find("LockHue=") == 0)config->lockHue = std::stoi(line.substr(8));
-
                 if (line.find("LastBayesHue=") == 0)config->lastBayesHue = std::stoi(line.substr(13));
-
             }
         }
+
         return config;
     }
 

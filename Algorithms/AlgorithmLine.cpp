@@ -7,7 +7,7 @@ class LineTracker : public Detection {
 public:
     //根据读取的配置文件恢复上次跟踪
     void recovery(const DllConfig* config) {
-        if (!config) {
+        if (config==nullptr) {
             std::cout << "Config is null!" << std::endl;
             return;
         }
