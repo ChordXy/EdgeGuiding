@@ -14,16 +14,6 @@
 #define MM_TO_MILLIAMP      1
 
 
-class DllConfig {
-public:
-    int targetHue = 0;
-    int lockMid=0;
-    int lockHue=0;
-    int lastBayesHue=0;
-    int lastHue = 0;
-    int lastResultX = 0;
-};
-
 class Detection {
 public:
     virtual ~Detection() = default;
@@ -38,6 +28,10 @@ public:
     void setMiddle(const int m) { reset(); middle = m; }
     void setPosition(const int p) { lmr = p; } // 0:Left, 1:Mid, 2:Right
 
+    //加载、返回配置文件
+    virtual void fromMap(const std::map<std::string, int>& m) =0;
+    virtual std::map<std::string, int> toMap() =0;
+
     // 辅助计算
     double calCurrent(int cx) {
         return (cx - lBoundary) * PIXEL_TO_MM * MM_TO_MILLIAMP / (rBoundary - lBoundary);
@@ -51,106 +45,7 @@ protected:
     int middle = 160;
     int lmr = 0;        // 0:Left, 1:Mid, 2:Right
     int targetHue = 0;
-    //保存本次跟踪数据
-    void saveDllConfig(DllConfig* config) {
 
-        std::ifstream in(INI_FILE_PATH);
-        if (!in.is_open()) return;
-
-        std::stringstream buffer;
-        std::string line;
-        bool foundTargetHue=false;
-        bool foundLastResultX=false;
-        bool foundLastHue=false;
-        bool inUserSection = false;
-        while (std::getline(in, line)) {
-            std::string originalLine = line;
-
-            if (!line.empty() && line.back() == '\r') {
-                line.pop_back();
-            }
-
-            // 判断 section
-            if (line.find("[User]") != std::string::npos) {
-                inUserSection = true;
-            }
-            else if (!line.empty() && line[0] == '[') {
-                inUserSection = false;
-            }
-
-            if (inUserSection) {
-                if (line.find("TargetHue=") == 0) {
-                    buffer << "TargetHue=" << config->targetHue << "\n";
-                    foundTargetHue=true;
-                    continue;
-                }
-                if (line.find("LastHue=") == 0) {
-                    buffer << "LastHue=" << config->lastHue << "\n";
-                    foundLastHue=true;
-                    continue;
-                }
-                if (line.find("LastResultX=") == 0) {
-                    buffer << "LastResultX=" << config->lastResultX << "\n";
-                    foundLastResultX=true;
-                    continue;
-                }
-            }
-
-            buffer << originalLine << "\n";
-        }
-        if(!foundTargetHue)buffer <<"TargetHue=" << config->targetHue << "\n";
-        if(!foundLastHue)buffer <<"LastHue=" << config->lastHue << "\n";
-        if(!foundLastResultX)buffer << "LastResultX=" << config->lastResultX << "\n";
-
-        in.close();
-
-        std::ofstream out(INI_FILE_PATH);
-        if (!out.is_open()) return;
-
-        out << buffer.str();
-        return;
-    }
-
-    //从配置文件中恢复上次跟踪的数据
-    DllConfig* loadConfig() {
-        std::ifstream file(INI_FILE_PATH);
-        if (!file.is_open()) return nullptr;
-        DllConfig* config = new DllConfig();
-
-        std::string line;
-        bool inUserSection = false;
-
-        while (std::getline(file, line)) {
-            if (!line.empty() && line.back() == '\r') {
-                line.pop_back();
-            }
-
-            // 判断 section
-            if (line.find("[User]") != std::string::npos) {
-                inUserSection = true;
-                continue;
-            } else if (!line.empty() && line[0] == '[') {
-                inUserSection = false;
-            }
-            //读取数据
-            if (inUserSection) {
-                if (line.find("TargetHue=") == 0)config->targetHue = std::stoi(line.substr(10));
-
-                if (line.find("LastHue=") == 0)config->lastResultX = std::stoi(line.substr(8));
-
-                if (line.find("LastResultX=") == 0)config->lastResultX = std::stoi(line.substr(12));
-
-                if (line.find("LockMid=") == 0)config->lastResultX = std::stoi(line.substr(8));
-
-                if (line.find("LockHue=") == 0)config->lastResultX = std::stoi(line.substr(8));
-
-                if (line.find("LastBayesHue=") == 0)config->lastResultX = std::stoi(line.substr(13));
-
-            }
-        }
-
-        return config;
-    }
 
 
     // 通用贝叶斯 Hue 选择逻辑

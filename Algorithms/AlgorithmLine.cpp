@@ -2,33 +2,42 @@
 #include <fstream>
 #include <string>
 #include <sstream>
-#define INI_FILE_PATH       "/opt/config.ini"
 class LineTracker : public Detection {
 public:
-    //根据读取的配置文件恢复上次跟踪
-    void recovery(const DllConfig* config) {
-        if (config==nullptr) {
-            std::cout << "Config is null!" << std::endl;
-            return;
-        }
-        this->targetHue=config->targetHue;
-        this->lockHue=config->lockHue;
-        this->lockMid=config->lockMid;
-        this->lastBayesHue=config->lastBayesHue;
-        lostFrames=30;
-        isCalibrated=true;
+
+    void fromMap(const std::map<std::string, int>& m) override {
+        auto get = [&](const std::string& key, int& var) {
+            auto it = m.find(key);
+            if (it != m.end()) {
+                var = it->second;
+            }
+        };
+
+        get("TargetHue", targetHue);
+        get("LockMid", lockMid);
+        get("LockHue", lockHue);
+        get("LastBayesHue", lastBayesHue);
+
     }
 
+    std::map<std::string, int> toMap() override {
+        std::map<std::string, int> m;
+
+        m["TargetHue"] = targetHue;
+        m["LockMid"] = lockMid;
+        m["LockHue"] = lockHue;
+        m["LastBayesHue"] = lastBayesHue;
+
+        return m;
+    }
 
     LineTracker() {
         // 构造时初始化
         lockMid = -1;
         lockHue = -1;
-        lostFrames = 0;
+        lostFrames = 10;
         lastBayesHue = -1;
         isCalibrated = false;
-        DllConfig* load=loadConfig();
-        recovery(load);
     }
 
     const char* getAlgorithmName() const override {
@@ -162,14 +171,7 @@ public:
                 return -1;
             }
         }
-        if(found){
-            DllConfig* dc=new DllConfig();
-            dc->lockHue=this->lockHue;
-            dc->lockMid=this->lockMid;
-            dc->targetHue=this->targetHue;
-            dc->lastBayesHue=this->lastBayesHue;
-            saveDllConfig(dc);
-        }
+
         return lockMid;
     }
 

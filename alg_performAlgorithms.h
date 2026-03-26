@@ -25,6 +25,8 @@ public:
     void initParameters(int t_alg, int t_lb, int t_rb, int t_mid, int t_lmr) { m_alg = t_alg; m_lb = t_lb; m_rb = t_rb; m_mid = t_mid; m_lmr = t_lmr; }
     void startDetect();
     void stopDetect();
+    void loadSettings(const std::map<std::string, int>& m){Algs[curAlg]->fromMap(m);}
+    void saveSettings(){saveDynamicLibSettings(Algs[curAlg]->toMap());}
     double getRatioMid(){return ratioMid;}
 public slots:
     void recvImage(const cv::Mat &mat);                 // 处理图像

@@ -2,24 +2,33 @@
 
 class ColorBlockTracker : public Detection {
 public:
-    //根据读取的配置文件恢复上次跟踪
-    void recovery(const DllConfig* config) {
-        if (config==nullptr) {
-            std::cout << "Config is null!" << std::endl;
-            return;
-        }
-        this->targetHue=config->targetHue;
-        this->lastHue=config->lastHue;
-        this->lastResultX=config->lastResultX;
-        isCalibrated=true;
+    void fromMap(const std::map<std::string, int>& m) override {
+        auto get = [&](const std::string& key, int& var) {
+            auto it = m.find(key);
+            if (it != m.end()) {
+                var = it->second;
+            }
+        };
+
+        get("TargetHue", targetHue);
+        get("LastHue", lastHue);
+        get("LastResultX", lastResultX);
+    }
+
+    std::map<std::string, int> toMap() override {
+        std::map<std::string, int> m;
+
+        m["TargetHue"] = targetHue;
+        m["LastHue"] = lastHue;
+        m["LastResultX"] = lastResultX;
+
+        return m;
     }
 
     ColorBlockTracker() {
         lastHue = -1;
         lastResultX = -1;
-        isCalibrated = false;
-        DllConfig* load=loadConfig();
-        recovery(load);
+        isCalibrated = true;
     }
 
     const char* getAlgorithmName() const override {
@@ -137,13 +146,7 @@ public:
 
             lastResultX = finalX;
         }
-        if(isCalibrated){
-            DllConfig* dc=new DllConfig();
-            dc->lastHue=this->lastHue;
-            dc->lastResultX=this->lastResultX;
-            dc->targetHue=this->targetHue;
-            saveDllConfig(dc);
-        }
+
         return finalX;
     }
 
