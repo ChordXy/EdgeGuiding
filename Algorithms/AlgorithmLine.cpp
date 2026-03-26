@@ -37,7 +37,7 @@ public:
         lockHue = -1;
         lostFrames = 10;
         lastBayesHue = -1;
-        isCalibrated = false;
+        isCalibrated = true;
     }
 
     const char* getAlgorithmName() const override {

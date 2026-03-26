@@ -54,9 +54,9 @@ void performAlgorithms::initAlgorithm() {
         emit processErrors(_NO_ALGORITHM_BLOCK_LOADED, QString("Error in initialize Block Algorithm"));
         return;
     }
+    setAlgorithm(m_alg);
     const std::map<std::string, int>& m=loadDynamicLibSettings();
     loadSettings(m);
-    setAlgorithm(m_alg);
     setBoundary(m_lb, m_rb);
     //setMiddle(m_mid);
     setTrack(m_lmr);
