@@ -54,10 +54,11 @@ void performAlgorithms::initAlgorithm() {
         emit processErrors(_NO_ALGORITHM_BLOCK_LOADED, QString("Error in initialize Block Algorithm"));
         return;
     }
-
     setAlgorithm(m_alg);
+    const std::map<std::string, int>& m=loadDynamicLibSettings();
+    loadSettings(m);
     setBoundary(m_lb, m_rb);
-    setMiddle(m_mid);
+    //setMiddle(m_mid);
     setTrack(m_lmr);
     logging(QString(" >>> 初始化\n\t > Alg=%1\n\t > L=%2 R=%3\n\t > Mid=%4\n\t > LMR=%5").arg(m_alg).arg(m_lb).arg(m_rb).arg(m_mid).arg(m_lmr), "Algorithm -> init");
 
@@ -107,10 +108,9 @@ void performAlgorithms::recvImage(const cv::Mat &mat) {
     tmp.center = calcenter;
 
     logging(QString(" >>> Cal %1").arg(calcenter), "Algorithm -> recvImage");
-
+    saveSettings();
     // 5. 发送结果
     emit calculatedResults(tmp);
-
     // 6. PWM调节
     ratioMid = Algs[curAlg]->calCurrent(calcenter);
     duty_pwm = 1000 * (100.00 - ratioMid);

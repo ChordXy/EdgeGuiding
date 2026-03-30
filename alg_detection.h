@@ -6,9 +6,13 @@
 #include <cmath>
 #include <algorithm>
 #include <string>
+#include <sstream>
+#include <fstream>
+#include <define.h>
 
 #define PIXEL_TO_MM         100
 #define MM_TO_MILLIAMP      1
+
 
 class Detection {
 public:
@@ -24,6 +28,10 @@ public:
     void setMiddle(const int m) { reset(); middle = m; }
     void setPosition(const int p) { lmr = p; } // 0:Left, 1:Mid, 2:Right
 
+    //加载、返回配置文件
+    virtual void fromMap(const std::map<std::string, int>& m) =0;
+    virtual std::map<std::string, int> toMap() =0;
+
     // 辅助计算
     double calCurrent(int cx) {
         return (cx - lBoundary) * PIXEL_TO_MM * MM_TO_MILLIAMP / (rBoundary - lBoundary);
@@ -37,6 +45,8 @@ protected:
     int middle = 160;
     int lmr = 0;        // 0:Left, 1:Mid, 2:Right
     int targetHue = 0;
+
+
 
     // 通用贝叶斯 Hue 选择逻辑
     int selectHueBayes(const cv::Mat& hsv, int targetHue, int lastHue) {
@@ -107,5 +117,6 @@ protected:
 extern "C" {
     typedef Detection* (*CreateAlgorithmFunc)();
 }
+
 
 #endif // DETECTION_H

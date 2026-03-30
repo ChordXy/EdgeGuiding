@@ -5,7 +5,6 @@ MainWindow::MainWindow(QWidget *parent)
     : autoLockWindow(parent)
     , ui(new Ui::MainWindow) {
     ui->setupUi(this);
-
     // 1. 加载设置
     ac = loadSettings();
     // 2. 窗体添加自动锁定事件（只要任一子控件有触摸等动作，则锁定重新计时

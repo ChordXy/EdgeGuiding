@@ -1,14 +1,43 @@
 ﻿#include "alg_detection.h"
-
+#include <fstream>
+#include <string>
+#include <sstream>
 class LineTracker : public Detection {
 public:
+
+    void fromMap(const std::map<std::string, int>& m) override {
+        auto get = [&](const std::string& key, int& var) {
+            auto it = m.find(key);
+            if (it != m.end()) {
+                var = it->second;
+            }
+        };
+
+        get("TargetHue", targetHue);
+        get("LockMid", lockMid);
+        get("LockHue", lockHue);
+        get("LastBayesHue", lastBayesHue);
+
+    }
+
+    std::map<std::string, int> toMap() override {
+        std::map<std::string, int> m;
+
+        m["TargetHue"] = targetHue;
+        m["LockMid"] = lockMid;
+        m["LockHue"] = lockHue;
+        m["LastBayesHue"] = lastBayesHue;
+
+        return m;
+    }
+
     LineTracker() {
         // 构造时初始化
         lockMid = -1;
         lockHue = -1;
-        lostFrames = 0;
+        lostFrames = 10;
         lastBayesHue = -1;
-        isCalibrated = false;
+        isCalibrated = true;
     }
 
     const char* getAlgorithmName() const override {

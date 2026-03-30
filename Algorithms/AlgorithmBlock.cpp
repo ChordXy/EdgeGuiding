@@ -2,10 +2,32 @@
 
 class ColorBlockTracker : public Detection {
 public:
+    void fromMap(const std::map<std::string, int>& m) override {
+        auto get = [&](const std::string& key, int& var) {
+            auto it = m.find(key);
+            if (it != m.end()) {
+                var = it->second;
+            }
+        };
+
+        get("TargetHue", targetHue);
+        get("LastHue", lastHue);
+        get("LastResultX", lastResultX);
+    }
+
+    std::map<std::string, int> toMap() override {
+        std::map<std::string, int> m;
+
+        m["TargetHue"] = targetHue;
+        m["LastHue"] = lastHue;
+        m["LastResultX"] = lastResultX;
+
+        return m;
+    }
+
     ColorBlockTracker() {
         lastHue = -1;
         lastResultX = -1;
-        //isCalibrated = false;
         isCalibrated = true;
     }
 
@@ -36,7 +58,6 @@ public:
                 return -1;
             }
         }
-
         // --- 阶段2: 正常跟踪逻辑 ---
         int extend = 5;
         int roiHeight = 80; // 色块通常只需要窄一点
@@ -134,6 +155,9 @@ private:
     int lastResultX;
     bool isCalibrated;
 };
+
+
+
 
 extern "C" {
 #ifdef _WIN32
